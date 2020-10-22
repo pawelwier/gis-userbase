@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import userApi from './api/User'
 
+
 const AddUser = () => {
+    let history = useHistory();
+
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
     const [email, setEmail] = useState("")
@@ -18,8 +22,9 @@ const AddUser = () => {
         e.preventDefault();
         const result = await userApi.post("/", {
             firstName, lastName, email, voivodeship, powiat, gmina, town, street, postcode, streetNumber, flatNumber
-        })
-        console.log(result.data)
+        }).then(
+            history.push("/")
+        )
     }
     return (
         <div>
@@ -46,8 +51,10 @@ const AddUser = () => {
                 <input onChange={e => setStreetNumber(e.target.value)} type="text" id="" value={streetNumber} /><br />
                 <label htmlFor="">Nr mieszkania: </label>
                 <input onChange={e => setFlatNumber(e.target.value)} type="text" id="" value={flatNumber} /><br />
-                <button type="submit">submit</button>
+                <button type="submit">Dodaj</button>
             </form>
+            <br />
+            <button onClick={() => history.push("/")}>Glowna</button>
         </div>
     )
 }

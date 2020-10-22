@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import ReactMapGL, { Marker } from 'react-map-gl'
+import { useHistory } from 'react-router-dom'
 
 const MapEntries = () => {
+    let history = useHistory();
+
     const [viewport, setViewport] = useState({
         width: '460px',
         height: '450px',
@@ -28,21 +31,25 @@ const MapEntries = () => {
     }, [])
 
     return (
-        <ReactMapGL {...viewport} 
-        mapboxApiAccessToken="pk.eyJ1IjoicGF3ZWx3aWVyIiwiYSI6ImNrZHZqZXZxdDJqNzAyd3R2Y2N5bjFtcGoifQ.7PEYnuS1yokxBbRFsJlc4Q" 
-        onViewportChange={setViewport}
-        >
-            
-            {allUserLocations && allUserLocations.map((el) => { 
-                return (
-                    <Marker
-                        key={el.id}
-                        latitude={el.latitude}
-                        longitude={el.longitude}
-                    >X</Marker>
-            )}
-            )} 
-        </ReactMapGL>
+        <>
+            <ReactMapGL {...viewport} 
+            mapboxApiAccessToken="pk.eyJ1IjoicGF3ZWx3aWVyIiwiYSI6ImNrZHZqZXZxdDJqNzAyd3R2Y2N5bjFtcGoifQ.7PEYnuS1yokxBbRFsJlc4Q" 
+            onViewportChange={setViewport}
+            >
+                
+                {allUserLocations && allUserLocations.map((el) => { 
+                    return (
+                        <Marker
+                            key={el.id}
+                            latitude={el.latitude}
+                            longitude={el.longitude}
+                        >X</Marker>
+                )}
+                )} 
+            </ReactMapGL>
+            <br />
+            <button onClick={() => history.push("/")}>Glowna</button>
+        </>
     )
 }
 
