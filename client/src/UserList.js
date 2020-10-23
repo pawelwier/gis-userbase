@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import './App.css'
 
 const UserList = () => {
     let history = useHistory();
@@ -11,7 +12,7 @@ const UserList = () => {
             const result = await fetch('http://localhost:3003/api/v1/users')
                 .then(result => result.json())
                 .then(data => {
-                    console.log(data.count)
+                    data.count.sort((a, b) => a.id - b.id)
                     setUsersPrinted(data.count);
                 })
         }
@@ -19,15 +20,23 @@ const UserList = () => {
         userList()
     }, [])
 
+    const getFullAddress = (entry) => {
+        const fullAddress = entry.flat_number ? `${entry.street} ${entry.street_number}/${entry.flat_number}, ${entry.postcode} ${entry.town}` : 
+        `${entry.street} ${entry.street_number}, ${entry.postcode} ${entry.town}`
+        return fullAddress;
+    }
+
     return (
         <div>
-            <table>
-                <tbody>
+            <table className="table">
+                <thead className="thead-dark">
                     <tr>
-                        <td>imie</td>
-                        <td>nazwisko</td>
-                        <td>adres</td>
+                        <th>imie</th>
+                        <th>nazwisko</th>
+                        <th>adres</th>
                     </tr>
+                </thead>
+                <tbody>
                     {usersPrinted.map(e => {
                         return (<tr key={e.id}>
                             <td>
@@ -37,14 +46,14 @@ const UserList = () => {
                                 {e.last_name}
                             </td>
                             <td>
-                                {`${e.street} ${e.street_number} / ${e.flat_number}, ${e.postcode} ${e.town}`}
+                                {getFullAddress(e)}
                             </td>
                         </tr>)
                     })}
                 </tbody>
             </table>
             
-            <button onClick={() => history.push("/")}>Glowna</button>
+            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Glowna</button>
         </div>
     )
 }

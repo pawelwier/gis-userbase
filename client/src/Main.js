@@ -7,11 +7,10 @@ const Main = () => {
 
     return (
         <>
-            <button onClick={() => history.push("/add")}>Dodaj</button>
-            <br />
-            <button onClick={() => history.push("/map")}>Mapa</button>
-            <br />
-            <button onClick={() => history.push("/users")}>Uzytkownicy</button>
+            <button className="btn btn-primary btn-lg btn-block" onClick={() => history.push("/add")}>Dodaj użytkownika (1)</button>
+            <button className="btn btn-primary btn-lg btn-block" onClick={() => history.push("/select")}>Dodaj użytkownika (2)</button>
+            <button className="btn btn-primary btn-lg btn-block" onClick={() => history.push("/map")}>Mapa użytkowników</button>
+            <button className="btn btn-primary btn-lg btn-block" onClick={() => history.push("/users")}>Lista użytkowników</button>
         </>
     )
 }

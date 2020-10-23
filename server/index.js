@@ -22,7 +22,7 @@ app.post('/api/v1/users', async (req, res) => {
     const result = await db.query(`insert into users(first_name, last_name, email,
          voivodeship, powiat, gmina, town, street, postcode, street_number, flat_number) 
          values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning *;`,
-         [b.firstName, b.lastName, b.email, b.voivodeship, b.powiat, b.gmina, b.town, b.street, b.postcode, b.streetNumber, b.flatNumber])
+         [b.firstName, b.lastName, b.email, b.voivodeship, b.powiat, b.gmina, b.town, b.street, b.postcode, b.streetNumber, b.flatNumber = null])
         
         const newId = result.rows[0].id;
         setLongitudeLatitude(b.streetNumber, b.postcode, b.street, b.town, newId);

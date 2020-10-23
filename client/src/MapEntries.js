@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import ReactMapGL, { Marker } from 'react-map-gl'
 import { useHistory } from 'react-router-dom'
+import SelectedUserInfo from './SelectedUserInfo';
+import './App.css'
 
 const MapEntries = () => {
     let history = useHistory();
@@ -13,7 +15,7 @@ const MapEntries = () => {
         zoom: 5
     })
     const [allUserLocations, setAllUserLocations] = useState([]);
-    
+    const [selectedUser, SetSelectedUser] = useState({})
     
     
 
@@ -43,12 +45,13 @@ const MapEntries = () => {
                             key={el.id}
                             latitude={el.latitude}
                             longitude={el.longitude}
-                        >X</Marker>
+                        ><div id="exMarker" onClick={() => {SetSelectedUser(el)}}>X</div></Marker>
                 )}
                 )} 
             </ReactMapGL>
+            {selectedUser.id && <SelectedUserInfo user={selectedUser} />}
             <br />
-            <button onClick={() => history.push("/")}>Glowna</button>
+            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Glowna</button>
         </>
     )
 }

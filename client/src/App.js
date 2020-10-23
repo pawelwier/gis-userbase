@@ -6,6 +6,7 @@ import MapEntries from './MapEntries';
 import AddUser from './AddUser'
 import Main from './Main'
 import UserList from './UserList';
+import AddUserSelect from './AddUserSelect';
 
 function App() {
   return (
@@ -14,8 +15,8 @@ function App() {
           <Route exact path="/" component={Main} />
           <Route exact path="/users" component={UserList} />
           <Route exact path="/add" component={AddUser} />
-          <Route exact path="/users" component={UserList} />
           <Route exact path="/map" component={MapEntries} />
+          <Route exact path="/select" component={AddUserSelect} />
       </Switch>
     </Router>
   );
