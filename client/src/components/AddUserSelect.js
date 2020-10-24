@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
+import {addNewUser} from '../controllers/userController'
 
 const AddUserSelect = () => {
 
@@ -19,14 +20,11 @@ const AddUserSelect = () => {
     const [addressOptions, setAddressOptions] = useState([]);
     const [fullAddressOptions, setFullAddressOptions] = useState([]);
     const [selectedAddress, setSelectedAddress] = useState("");
-
-    const addNewUserSelected = (e) => {
-        e.preventDefault();
-    }
+    const [addressRemainingDetails, setAddressRemainingDetails] = useState({})
 
     const makeInputActiveInactive = (idCondition, idChange) => {
         let elementActiveText = document.getElementById(idCondition).value
-        document.getElementById(idChange).disabled = (elementActiveText == "- wybierz -") ? true : false
+        document.getElementById(idChange).disabled = (elementActiveText === "- wybierz -") ? true : false
     }
 
     const disableById = (id) => {
@@ -62,7 +60,7 @@ const AddUserSelect = () => {
                 const tags = data._search.tags
                 const resultArray = tags.map((e) => e.tag)
                 resultArray.shift();
-                if (e.target.value == "pomorskie") resultArray.shift();
+                if (e.target.value === "pomorskie") resultArray.shift();
                 setTownOptions(resultArray)
                 makeInputActiveInactive("voivodeshipSelection", "townSelection")
             })
@@ -85,14 +83,14 @@ const AddUserSelect = () => {
 
     const getGimnaPowiatFromApi = async () => {
 
-        if (streetName == "") {
+        if (streetName === "") {
             setAddressOptions([])
             setFullAddressOptions([])
             disableById("addressSelection")
             return
         }
 
-        const reqBody = {  "reqs": [
+        const reqBody = { "reqs": [
                 {
                 "q": `${selectedTown} ${streetName}`
                 }
@@ -109,7 +107,6 @@ const AddUserSelect = () => {
             })
             .then(response => response.json())
             .then(data => {
-                //console.log(data[0].others)
                 if (!data[0].others) return;
                 const addresses = data[0].others
                 setFullAddressOptions(data[0].others);
@@ -120,15 +117,25 @@ const AddUserSelect = () => {
     }
 
     const updateAddress = () => {
-        const finalAddress = fullAddressOptions.find(address => address.name == selectedAddress)
-        if (finalAddress) document.getElementById("printedAddress").innerHTML = finalAddress.longDesc
+        const finalAddress = fullAddressOptions.find(address => address.name === selectedAddress)
+        if (finalAddress) {
+            setAddressRemainingDetails({
+                postcode : finalAddress.pkt_kodPocztowy,
+                gmina : finalAddress.gm_nazwa,
+                powiat : finalAddress.pow_nazwa,
+                streetNumber : finalAddress.pkt_numer,
+            });
+            document.getElementById("printedAddress").innerHTML = finalAddress.longDesc
+        }
     }
 
     useEffect(updateAddress, [selectedAddress])
 
     return (
-        <>
-            <form className="form-group" style={{"width": "20%", "line-height": "0.8", "font-size": "0.9em"}} onSubmit={addNewUserSelected}>
+        <div className="container" style={{"width": "50%"}}>
+            <form className="form-group" style={{"lineHeight": "0.8", "fontSize": "0.9em"}} 
+            onSubmit={e => addNewUser(e, history, firstName, lastName, email, voivodeship, addressRemainingDetails.powiat, 
+            addressRemainingDetails.gmina, selectedTown, streetName, addressRemainingDetails.postcode, addressRemainingDetails.streetNumber)}>
             <label htmlFor="firstName">Imię:</label>
                 <input onChange={e => setFirstName(e.target.value)} className="form-control form-control-sm" type="text" id="firstName" value={firstName} /><br />
                 <label htmlFor="lastName">Nazwisko: </label>
@@ -136,7 +143,7 @@ const AddUserSelect = () => {
                 <label htmlFor="email">Email: </label>
                 <input onChange={e => setEmail(e.target.value)} className="form-control form-control-sm" type="text" id="email" value={email} /><br />
                 <label htmlFor="voivodeshipSelection">Województwo: </label>
-                <select class="form-control form-control-sm" onChange={e => handleVoivodeshipSelect(e)} value={voivodeship} id="voivodeshipSelection">
+                <select className="form-control form-control-sm" onChange={e => handleVoivodeshipSelect(e)} value={voivodeship} id="voivodeshipSelection">
                     <option>- wybierz -</option>
                     {voivodeshipList.map((v) => {
                         return (
@@ -145,7 +152,7 @@ const AddUserSelect = () => {
                         })}
                 </select><br />
                 <label htmlFor="townSelection">Miasto: </label>
-                <select class="form-control form-control-sm" disabled onChange={e => handleTownSelection(e)} value={selectedTown} id="townSelection">
+                <select className="form-control form-control-sm" disabled onChange={e => handleTownSelection(e)} value={selectedTown} id="townSelection">
                     <option>- wybierz -</option>
                     {townOptions.map((e) => {
                         return (
@@ -159,7 +166,7 @@ const AddUserSelect = () => {
                 <input disabled onBlur={() => {getGimnaPowiatFromApi()}} type="text" className="form-control form-control-sm" value={streetName} 
                     onChange={e => {handleStreetInput(e)}} id="streetSelection"/><br />
                 <label htmlFor="selectedAddress">Adres: </label>
-                <select class="form-control form-control-sm" disabled value={selectedAddress} onChange={e => setSelectedAddress(e.target.value)} id="addressSelection">
+                <select className="form-control form-control-sm" disabled value={selectedAddress} onChange={e => setSelectedAddress(e.target.value)} id="addressSelection">
                     <option>- wybierz -</option>
                         {addressOptions.map((e) => {
                             return (
@@ -169,12 +176,12 @@ const AddUserSelect = () => {
                             )
                         })}
                 </select><br />
-                <div style={{"text-align": "right"}}><button className="btn btn-info" type="submit">Dodaj</button></div>
+                <div style={{"textAlign": "right"}}><button className="btn btn-info" type="submit">Dodaj</button></div>
             </form>
             <div id="printedAddress"></div>
             <br />
-            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Glowna</button>
-        </>
+            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Główna</button>
+        </div>
     )
 }
 

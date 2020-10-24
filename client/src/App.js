@@ -2,11 +2,11 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import './App.css';
 
-import MapEntries from './MapEntries';
-import AddUser from './AddUser'
-import Main from './Main'
-import UserList from './UserList';
-import AddUserSelect from './AddUserSelect';
+import MapEntries from './components/MapEntries';
+import AddUser from './components/AddUser'
+import Main from './components/Main'
+import UserList from './components/UserList';
+import AddUserSelect from './components/AddUserSelect';
 
 function App() {
   return (

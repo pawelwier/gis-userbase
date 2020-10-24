@@ -9,7 +9,7 @@ const SelectedUserInfo = ( {user} ) => {
     }
 
     return (
-        <div style={{"margin-top": "20px", "width": "460px"}} className="card" id="selected_user">
+        <div style={{"marginTop": "20px", "width": "460px"}} className="card" id="selected_user">
             <div className="card-body">
             <h6 className="card-title"><b>Uzytkownik:</b> {user.first_name} {user.last_name}</h6>
             <h6 className="card-subtitle"><b>Adres: </b>{getFullAddress(user)}</h6>

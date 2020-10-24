@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import './App.css'
+import '../App.css'
 
 const UserList = () => {
     let history = useHistory();
@@ -9,7 +9,7 @@ const UserList = () => {
 
     useEffect(() => {
         const userList = async () => {
-            const result = await fetch('http://localhost:3003/api/v1/users')
+            await fetch('http://localhost:3003/api/v1/users')
                 .then(result => result.json())
                 .then(data => {
                     data.count.sort((a, b) => a.id - b.id)
@@ -31,9 +31,9 @@ const UserList = () => {
             <table className="table">
                 <thead className="thead-dark">
                     <tr>
-                        <th>imie</th>
-                        <th>nazwisko</th>
-                        <th>adres</th>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>Adres</th>
                     </tr>
                 </thead>
                 <tbody>
