@@ -13,10 +13,10 @@ function App() {
     <Router>
       <Switch>
           <Route exact path="/" component={Main} />
-          <Route exact path="/users" component={UserList} />
-          <Route exact path="/add" component={AddUser} />
+          <Route exact path="/add1" component={AddUserSelect} />
+          <Route exact path="/add2" component={AddUser} />
           <Route exact path="/map" component={MapEntries} />
-          <Route exact path="/select" component={AddUserSelect} />
+          <Route exact path="/users" component={UserList} />
       </Switch>
     </Router>
   );

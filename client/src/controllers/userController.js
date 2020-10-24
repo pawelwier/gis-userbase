@@ -13,4 +13,15 @@ const addNewUser = async(e, history, firstName, lastName, email, voivodeship, po
     )
 }
 
-export  { addNewUser }
+const makeAllElementsInactive = (selectedClass, val) => {
+    let inactiveElements = document.querySelectorAll(selectedClass)
+    inactiveElements.forEach(e => {
+        e.disabled = val
+    })
+}
+
+const disableById = (id, value) => {
+    document.getElementById(id).disabled = value
+}
+
+export  { addNewUser, disableById, makeAllElementsInactive }

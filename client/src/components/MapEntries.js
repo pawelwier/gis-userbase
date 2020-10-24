@@ -9,11 +9,11 @@ const MapEntries = () => {
     let history = useHistory();
 
     const [viewport, setViewport] = useState({
-        width: "460px",
-        height: "450px",
+        width: "560px",
+        height: "550px",
         latitude: 51.9577,
         longitude: 19.0676,
-        zoom: 5
+        zoom: 5.2
     })
     const [allUserLocations, setAllUserLocations] = useState([]);
     const [selectedUser, SetSelectedUser] = useState({})
@@ -47,17 +47,15 @@ const MapEntries = () => {
                             key={el.id}
                             latitude={el.latitude}
                             longitude={el.longitude}
-                            offsetTop={-10}
+                            offsetTop={-12}
                             offsetLeft={-15}
-                            width={6 * viewport.zoom}
-                            height={6 * viewport.zoom}
                         ><div id="exMarker" onClick={() => {SetSelectedUser(el)}}><img src={markerImg} /></div></Marker>
                 )}
                 )} 
             </ReactMapGL>
             {selectedUser.id && <SelectedUserInfo user={selectedUser} />}
             <br />
-            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Glowna</button>
+            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Główna</button>
         </div>
     )
 }

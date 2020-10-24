@@ -53,7 +53,7 @@ const UserList = () => {
                 </tbody>
             </table>
             
-            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Glowna</button>
+            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Główna</button>
         </div>
     )
 }

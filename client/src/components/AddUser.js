@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { addNewUser } from '../controllers/userController'
+import { addNewUser, disableById, makeAllElementsInactive } from '../controllers/userController'
 
 
 const AddUser = () => {
@@ -39,26 +39,35 @@ const AddUser = () => {
           .then(data => {
             let prefix = data[0].hasOwnProperty("single") ? data[0].single : (data[0].hasOwnProperty("others") ? data[0].others[0] : "none");
                 if (prefix === "none") {
-                    makeAllElementsActive();
-                    document.getElementById("notFound").innerHTML = "Nie znaleziono adresu. Prosze wprowadz recznie."
-                    document.getElementById("manualButton").style.visibility = "hidden"
+                    document.getElementById("notFound").style.visibility = "visible"
+                    disableById("submitButton", true)
                 } else {
                     setVoivodeship(prefix.woj_nazwa)
                     setPowiat(prefix.pow_nazwa)
                     setGmina(prefix.gm_nazwa)
                     setPostcode(prefix.pkt_kodPocztowy)
-                    document.getElementById("manualButton").style.visibility = "visible"
                     document.getElementById("notFound").style.visibility = "hidden"
+                    disableById("submitButton", false)
                 }
           })
     }
 
-    const makeAllElementsActive = () => {
-        let inactiveElements = document.querySelectorAll(".autoValue")
-        inactiveElements.forEach(e => {
-            e.disabled=!e.disabled
-        })
+    const makeAddressFieldsActive = () => {
+        if (!firstName || !lastName || !email) {
+            makeAllElementsInactive(".address-field", true);
+        } else {
+            makeAllElementsInactive(".address-field", false);
+        }
     }
+
+    const makeSubmitButtonActive = () => {
+        if (firstName && lastName && email && voivodeship && powiat && gmina && town && street && postcode && streetNumber) {
+            disableById("submitButton", false)
+        } else disableById("submitButton", true)
+    }
+
+    useEffect(makeAddressFieldsActive, [firstName, lastName, email])
+    useEffect(makeSubmitButtonActive, [firstName, lastName, email, voivodeship, powiat, gmina, town, street, postcode, streetNumber])
 
     return (
         <div className="container" style={{"width": "50%"}}>
@@ -69,7 +78,7 @@ const AddUser = () => {
                 <label htmlFor="lastName">Nazwisko: </label>
                 <input onChange={e => setLastName(e.target.value)} className="form-control form-control-sm" type="text" id="lastName" value={lastName} /><br />
                 <label htmlFor="email">Email: </label>
-                <input onChange={e => setEmail(e.target.value)} className="form-control form-control-sm" type="text" id="email" value={email} /> <div style={{"text-align": "right"}} id="notFound"></div><br />
+                <input onChange={e => setEmail(e.target.value)} className="form-control form-control-sm" type="text" id="email" value={email} /> <div style={{"textAlign": "right", "marginTop": "30px", "visibility":"hidden"}} id="notFound"><span className="alert alert-danger" style={{"width" : "24%"}}>Niepoprawny adres.</span></div><br />
                 <label htmlFor="voivodeship">Województwo: </label>
                 <input disabled onChange={e => setVoivodeship(e.target.value)} className="form-control autoValue form-control-sm" id="voivodeship" type="text" value={voivodeship} /><br />
                 <label htmlFor="">Powiat: </label>
@@ -77,16 +86,16 @@ const AddUser = () => {
                 <label htmlFor="">Gmina: </label>
                 <input disabled onChange={e => setGmina(e.target.value)} className="form-control autoValue form-control-sm" type="text" value={gmina} /><br />
                 <label htmlFor="">Kod pocztowy: </label>
-                <input disabled onChange={e => setPostcode(e.target.value)} className="form-control autoValue form-control-sm" type="text" value={postcode} /> <button className="btn btn-outline-info" id="manualButton" type="button" style={{"float": "right", "font-size": "0.9em", "padding": "3px"}} onClick={() => makeAllElementsActive()}>Recznie</button><br />
+                <input disabled onChange={e => setPostcode(e.target.value)} className="form-control autoValue form-control-sm" type="text" value={postcode} /><br />
                 <label htmlFor="">Miejscowość: </label>
-                <input onChange={e => setTown(e.target.value)} className="form-control form-control-sm" type="text" id="" value={town} /> <br />
+                <input onChange={e => setTown(e.target.value)} className="form-control form-control-sm address-field" type="text" id="" value={town} /> <br />
                 <label htmlFor="">Ulica: </label>
-                <input onChange={e => setStreet(e.target.value)} className="form-control form-control-sm" type="text" id="" value={street} /><br />
+                <input onChange={e => setStreet(e.target.value)} className="form-control form-control-sm address-field" type="text" id="" value={street} /><br />
                 <label htmlFor="">Nr domu: </label>
-                <input onBlur={() => {getPostCodeFromApi()}} onChange={e => setStreetNumber(e.target.value)} className="form-control form-control-sm" type="text" id="" value={streetNumber} /><br />
+                <input onBlur={() => {getPostCodeFromApi()}} onChange={e => setStreetNumber(e.target.value)} className="form-control form-control-sm address-field" type="text" id="" value={streetNumber} /><br />
                 <label htmlFor="">Nr mieszkania: </label>
-                <input onChange={e => setFlatNumber(e.target.value)} className="form-control form-control-sm" type="text" id="" value={flatNumber} /><br />
-                <div style={{"textAlign": "right"}}><button className="btn btn-info" type="submit">Dodaj</button></div>
+                <input onChange={e => setFlatNumber(e.target.value)} className="form-control form-control-sm address-field" type="text" id="" value={flatNumber} /><br />
+                <div style={{"textAlign": "right"}}><button disabled className="btn btn-info" type="submit" id="submitButton">Dodaj</button></div>
             </form>
             <br />
             <button className="btn btn-outline-info" onClick={() => history.push("/")}>Główna</button>

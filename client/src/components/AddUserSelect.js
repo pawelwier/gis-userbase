@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import {addNewUser} from '../controllers/userController'
+import { addNewUser, disableById, makeAllElementsInactive } from '../controllers/userController'
 
 const AddUserSelect = () => {
 
@@ -27,13 +27,9 @@ const AddUserSelect = () => {
         document.getElementById(idChange).disabled = (elementActiveText === "- wybierz -") ? true : false
     }
 
-    const disableById = (id) => {
-        document.getElementById(id).disabled = true
-    }
-
     const handleVoivodeshipSelect = async (e) => {
-        disableById("streetSelection");
-        disableById("addressSelection");
+        disableById("streetSelection", true);
+        disableById("addressSelection", true);
         setStreetName("");
         setAddressOptions([]);
         setFullAddressOptions([]);
@@ -72,7 +68,7 @@ const AddUserSelect = () => {
         setFullAddressOptions([])
         setSelectedAddress("")
         setSelectedTown(e.target.value)
-        disableById("addressSelection")
+        disableById("addressSelection", true)
         makeInputActiveInactive("townSelection", "streetSelection")
     }
     
@@ -86,7 +82,7 @@ const AddUserSelect = () => {
         if (streetName === "") {
             setAddressOptions([])
             setFullAddressOptions([])
-            disableById("addressSelection")
+            disableById("addressSelection", true)
             return
         }
 
@@ -125,11 +121,30 @@ const AddUserSelect = () => {
                 powiat : finalAddress.pow_nazwa,
                 streetNumber : finalAddress.pkt_numer,
             });
-            document.getElementById("printedAddress").innerHTML = finalAddress.longDesc
         }
     }
 
+    const makeAddressFieldsActive = () => {
+        if (!firstName || !lastName || !email) {
+            makeAllElementsInactive(".address-field", true);
+        } else {
+            makeAllElementsInactive("#voivodeshipSelection", false);
+            setVoivodeship("- wybierz -");
+            setStreetName("");
+            setSelectedTown("- wybierz -")
+            setSelectedAddress("")
+        }
+    }
+
+    const makeSubmitButtonActive = () => {
+        if (firstName && lastName && email && voivodeship && selectedAddress && selectedAddress !== "- wybierz -") {
+            disableById("submitButton", false)
+        } else disableById("submitButton", true)
+    }
+
     useEffect(updateAddress, [selectedAddress])
+    useEffect(makeAddressFieldsActive, [firstName, lastName, email])
+    useEffect(makeSubmitButtonActive, [firstName, lastName, email, voivodeship, selectedAddress])
 
     return (
         <div className="container" style={{"width": "50%"}}>
@@ -143,7 +158,7 @@ const AddUserSelect = () => {
                 <label htmlFor="email">Email: </label>
                 <input onChange={e => setEmail(e.target.value)} className="form-control form-control-sm" type="text" id="email" value={email} /><br />
                 <label htmlFor="voivodeshipSelection">Województwo: </label>
-                <select className="form-control form-control-sm" onChange={e => handleVoivodeshipSelect(e)} value={voivodeship} id="voivodeshipSelection">
+                <select className="form-control form-control-sm address-field" onChange={e => handleVoivodeshipSelect(e)} value={voivodeship} id="voivodeshipSelection">
                     <option>- wybierz -</option>
                     {voivodeshipList.map((v) => {
                         return (
@@ -152,7 +167,7 @@ const AddUserSelect = () => {
                         })}
                 </select><br />
                 <label htmlFor="townSelection">Miasto: </label>
-                <select className="form-control form-control-sm" disabled onChange={e => handleTownSelection(e)} value={selectedTown} id="townSelection">
+                <select className="form-control form-control-sm address-field" disabled onChange={e => handleTownSelection(e)} value={selectedTown} id="townSelection">
                     <option>- wybierz -</option>
                     {townOptions.map((e) => {
                         return (
@@ -163,10 +178,10 @@ const AddUserSelect = () => {
                     })}
                 </select><br />
                 <label htmlFor="streetName">Ulica: </label>
-                <input disabled onBlur={() => {getGimnaPowiatFromApi()}} type="text" className="form-control form-control-sm" value={streetName} 
+                <input disabled onBlur={() => {getGimnaPowiatFromApi()}} type="text" className="form-control form-control-sm address-field" value={streetName} 
                     onChange={e => {handleStreetInput(e)}} id="streetSelection"/><br />
                 <label htmlFor="selectedAddress">Adres: </label>
-                <select className="form-control form-control-sm" disabled value={selectedAddress} onChange={e => setSelectedAddress(e.target.value)} id="addressSelection">
+                <select className="form-control form-control-sm address-field" disabled value={selectedAddress} onChange={e => setSelectedAddress(e.target.value)} id="addressSelection">
                     <option>- wybierz -</option>
                         {addressOptions.map((e) => {
                             return (
@@ -176,7 +191,7 @@ const AddUserSelect = () => {
                             )
                         })}
                 </select><br />
-                <div style={{"textAlign": "right"}}><button className="btn btn-info" type="submit">Dodaj</button></div>
+                <div style={{"textAlign": "right"}}><button className="btn btn-info" type="submit" id="submitButton" disabled>Dodaj</button></div>
             </form>
             <div id="printedAddress"></div>
             <br />
