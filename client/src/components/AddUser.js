@@ -78,7 +78,8 @@ const AddUser = () => {
                 <label htmlFor="lastName">Nazwisko: </label>
                 <input onChange={e => setLastName(e.target.value)} className="form-control form-control-sm" type="text" id="lastName" value={lastName} /><br />
                 <label htmlFor="email">Email: </label>
-                <input onChange={e => setEmail(e.target.value)} className="form-control form-control-sm" type="text" id="email" value={email} /> <div style={{"textAlign": "right", "marginTop": "30px", "visibility":"hidden"}} id="notFound"><span className="alert alert-danger" style={{"width" : "24%"}}>Niepoprawny adres.</span></div><br />
+                <input onChange={e => setEmail(e.target.value)} className="form-control form-control-sm" type="text" id="email" value={email} /> 
+                <div style={{"textAlign": "right", "marginTop": "30px", "visibility":"hidden"}} id="notFound"><span className="alert alert-danger" style={{"width" : "24%"}}>Niepoprawny adres.</span></div><br />
                 <label htmlFor="voivodeship">Województwo: </label>
                 <input disabled onChange={e => setVoivodeship(e.target.value)} className="form-control autoValue form-control-sm" id="voivodeship" type="text" value={voivodeship} /><br />
                 <label htmlFor="">Powiat: </label>
@@ -95,10 +96,10 @@ const AddUser = () => {
                 <input onBlur={() => {getPostCodeFromApi()}} onChange={e => setStreetNumber(e.target.value)} className="form-control form-control-sm address-field" type="text" id="" value={streetNumber} /><br />
                 <label htmlFor="">Nr mieszkania: </label>
                 <input onChange={e => setFlatNumber(e.target.value)} className="form-control form-control-sm address-field" type="text" id="" value={flatNumber} /><br />
-                <div style={{"textAlign": "right"}}><button disabled className="btn btn-info" type="submit" id="submitButton">Dodaj</button></div>
+                <div style={{"textAlign": "right"}}><button disabled className="btn my-green-button" type="submit" id="submitButton">Dodaj</button></div>
             </form>
             <br />
-            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Główna</button>
+            <button className="btn  my-green-button" onClick={() => history.push("/")}>Główna</button>
         </div>
     )
 }

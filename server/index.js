@@ -32,6 +32,10 @@ app.post('/api/v1/users', async (req, res) => {
     }
          
 })
+app.delete('/api/v1/users/:id', async (req, res) => {
+    const result = await db.query(`delete from users where id = $1 returning *`, [req.params.id])
+    console.log(`${result.rows[0].id} deleted.`)
+})
 
 const setLongitudeLatitude = async (streetNumber, postcode, street, town, id) => {
 

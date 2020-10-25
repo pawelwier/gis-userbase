@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import '../App.css'
+import { handleDelete } from '../controllers/userController'
 
 const UserList = () => {
     let history = useHistory();
@@ -26,6 +27,7 @@ const UserList = () => {
         return fullAddress;
     }
 
+
     return (
         <div>
             <table className="table">
@@ -34,6 +36,7 @@ const UserList = () => {
                         <th>Imię</th>
                         <th>Nazwisko</th>
                         <th>Adres</th>
+                        <th> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,12 +51,15 @@ const UserList = () => {
                             <td>
                                 {getFullAddress(e)}
                             </td>
+                            <td>
+                                <button onClick={() => handleDelete(e, history)} type="button" style={{"backgroundColor":"#db5a65"}} className="btn btn-danger btn-sm">Usuń</button>
+                            </td>
                         </tr>)
                     })}
                 </tbody>
             </table>
             
-            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Główna</button>
+            <button className="btn my-green-button" onClick={() => history.push("/")}>Główna</button>
         </div>
     )
 }

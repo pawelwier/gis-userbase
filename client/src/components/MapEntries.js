@@ -55,7 +55,7 @@ const MapEntries = () => {
             </ReactMapGL>
             {selectedUser.id && <SelectedUserInfo user={selectedUser} />}
             <br />
-            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Główna</button>
+            <button className="btn my-green-button" onClick={() => history.push("/")}>Główna</button>
         </div>
     )
 }

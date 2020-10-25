@@ -1,17 +1,22 @@
 import React from 'react'
-import { useHistory } from 'react-router-dom'
+import { render } from 'lit-html'
+import { mainButtons } from '../lit-components/LitButtons'
+import globeIcon from '../globe_icon.png'
+import '../App.css'
 
 const Main = () => {
 
-    let history = useHistory();
+    const buttonArray = [
+        ["add1", "Dodaj użytkownika (1)"],
+        ["add2", "Dodaj użytkownika (2)"],
+        ["map", "Mapa użytkowników"],
+        ["users", "Lista użytkowników"]
+    ]
+
+    render(mainButtons(buttonArray), document.getElementById("buttons"))
 
     return (
-        <div className="container" style={{"width": "50%"}}>
-            <button className="btn btn-primary btn-lg btn-block" onClick={() => history.push("/add")}>Dodaj użytkownika (1)</button>
-            <button className="btn btn-primary btn-lg btn-block" onClick={() => history.push("/select")}>Dodaj użytkownika (2)</button>
-            <button className="btn btn-primary btn-lg btn-block" onClick={() => history.push("/map")}>Mapa użytkowników</button>
-            <button className="btn btn-primary btn-lg btn-block" onClick={() => history.push("/users")}>Lista użytkowników</button>
-        </div>
+            <div  className="container" style={{"textAlign":"center"}}><img src={globeIcon} style={{"marginTop":"50px", "width": "20%"}} /></div>
     )
 }
 

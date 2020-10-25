@@ -103,11 +103,15 @@ const AddUserSelect = () => {
             })
             .then(response => response.json())
             .then(data => {
-                if (!data[0].others) return;
+                if (!data[0].others) {
+                    document.getElementById("notFound").style.visibility = "visible"
+                    return;
+                    };
                 const addresses = data[0].others
                 setFullAddressOptions(data[0].others);
                 const resultArray = addresses.sort((a, b) => a.pkt_numer - b.pkt_numer).map((e) => e.name)
                 setAddressOptions(resultArray)
+                document.getElementById("notFound").style.visibility = "hidden"
                 makeInputActiveInactive("townSelection", "addressSelection")
             })
     }
@@ -157,6 +161,7 @@ const AddUserSelect = () => {
                 <input onChange={e => setLastName(e.target.value)} className="form-control form-control-sm" type="text" id="lastName" value={lastName} /><br />
                 <label htmlFor="email">Email: </label>
                 <input onChange={e => setEmail(e.target.value)} className="form-control form-control-sm" type="text" id="email" value={email} /><br />
+                <div style={{"textAlign": "right", "marginTop": "30px", "visibility":"hidden"}} id="notFound"><span className="alert alert-danger" style={{"width" : "24%"}}>Niepoprawny adres.</span></div>
                 <label htmlFor="voivodeshipSelection">Województwo: </label>
                 <select className="form-control form-control-sm address-field" onChange={e => handleVoivodeshipSelect(e)} value={voivodeship} id="voivodeshipSelection">
                     <option>- wybierz -</option>
@@ -179,7 +184,8 @@ const AddUserSelect = () => {
                 </select><br />
                 <label htmlFor="streetName">Ulica: </label>
                 <input disabled onBlur={() => {getGimnaPowiatFromApi()}} type="text" className="form-control form-control-sm address-field" value={streetName} 
-                    onChange={e => {handleStreetInput(e)}} id="streetSelection"/><br />
+                    onChange={e => {handleStreetInput(e)}} id="streetSelection"/> 
+                <br />
                 <label htmlFor="selectedAddress">Adres: </label>
                 <select className="form-control form-control-sm address-field" disabled value={selectedAddress} onChange={e => setSelectedAddress(e.target.value)} id="addressSelection">
                     <option>- wybierz -</option>
@@ -191,11 +197,11 @@ const AddUserSelect = () => {
                             )
                         })}
                 </select><br />
-                <div style={{"textAlign": "right"}}><button className="btn btn-info" type="submit" id="submitButton" disabled>Dodaj</button></div>
+                <div style={{"textAlign": "right"}}><button className="btn my-green-button" type="submit" id="submitButton" disabled>Dodaj</button></div>
             </form>
             <div id="printedAddress"></div>
             <br />
-            <button className="btn btn-outline-info" onClick={() => history.push("/")}>Główna</button>
+            <button className="btn my-green-button" onClick={() => history.push("/")}>Główna</button>
         </div>
     )
 }
