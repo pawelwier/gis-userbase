@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { addNewUser, disableById, makeAllElementsInactive } from '../controllers/userController'
-
+import MainPageButton from './MainPageButton'
 
 const AddUser = () => {
     let history = useHistory();
@@ -99,7 +99,7 @@ const AddUser = () => {
                 <div style={{"textAlign": "right"}}><button disabled className="btn my-green-button" type="submit" id="submitButton">Dodaj</button></div>
             </form>
             <br />
-            <button className="btn  my-green-button" onClick={() => history.push("/")}>Główna</button>
+            <MainPageButton history={history} />
         </div>
     )
 }

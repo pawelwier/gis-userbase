@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import '../App.css'
 import { handleDelete } from '../controllers/userController'
+import MainPageButton from './MainPageButton'
 
 const UserList = () => {
     let history = useHistory();
@@ -59,7 +60,7 @@ const UserList = () => {
                 </tbody>
             </table>
             
-            <button className="btn my-green-button" onClick={() => history.push("/")}>Główna</button>
+            <MainPageButton history={history} />
         </div>
     )
 }

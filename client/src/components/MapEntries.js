@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ReactMapGL, { Marker } from 'react-map-gl'
 import { useHistory } from 'react-router-dom'
 import SelectedUserInfo from './SelectedUserInfo';
+import MainPageButton from './MainPageButton'
 import '../App.css'
 import markerImg from '../mapmarker.png'
 
@@ -55,7 +56,7 @@ const MapEntries = () => {
             </ReactMapGL>
             {selectedUser.id && <SelectedUserInfo user={selectedUser} />}
             <br />
-            <button className="btn my-green-button" onClick={() => history.push("/")}>Główna</button>
+            <MainPageButton history={history} />
         </div>
     )
 }

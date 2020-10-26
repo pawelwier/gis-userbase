@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { addNewUser, disableById, makeAllElementsInactive } from '../controllers/userController'
+import MainPageButton from './MainPageButton'
 
 const AddUserSelect = () => {
 
@@ -201,7 +202,7 @@ const AddUserSelect = () => {
             </form>
             <div id="printedAddress"></div>
             <br />
-            <button className="btn my-green-button" onClick={() => history.push("/")}>Główna</button>
+            <MainPageButton history={history} />
         </div>
     )
 }
